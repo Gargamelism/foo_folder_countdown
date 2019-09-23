@@ -5,7 +5,7 @@ This foobar2000 component adds the option to set a path and count, and it will n
 
 ## Usage
 Copy the "foo_folder_countdown.dll" to C:\Program Files (x86)\foobar2000\components.
-![alt text](https://ibb.co/x63Nt9B)
+![configuration](https://i.ibb.co/XtVqr0K/foo-folder-countdown.png)
 
 ## Build
 Download latest foobar2000 sdk from [foobar2000 sdk](https://www.foobar2000.org/SDK) and register the projects to the missing projects in the solution.
