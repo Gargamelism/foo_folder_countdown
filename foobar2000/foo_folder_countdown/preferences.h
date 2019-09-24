@@ -8,6 +8,8 @@ namespace foo_countdown {
 	#define DEFAULT_PATH "folder path"
 #endif // !DEFAULT_PATH
 
+	const int npos = ~0;
+
 	typedef unsigned int uint;
 
 	struct file_count_t {

@@ -77,7 +77,7 @@ namespace foo_countdown {
 		int lowest_count = _global_count;
 
 		for (int i = 0; i < _files_count.size(); i++) {
-			if (path_.find_first(_files_count[i].path) >= 0) {
+			if (path_.find_first(_files_count[i].path) != npos) {
 				_files_count[i].count += 1;
 				updated = true;
 			}
@@ -90,8 +90,7 @@ namespace foo_countdown {
 		if (_global_count == _play_count) {
 			pfc::string8 msg("Folder count of folder <");
 			msg.add_string(_path);
-			msg.add_string("> reached peak: ");
-			msg.add_string(itoa(_play_count, nullptr, 10));
+			msg.add_string("> reached it's peak.");
 
 			popup_message::g_show(msg.c_str(), "Folder Countdown");
 			reset_play_count();
@@ -177,7 +176,7 @@ namespace foo_countdown {
 		pfc::string8 played_path(played_file.subString(file_prefix_idx, file_name_len).c_str());
 
 		for (int i = 0; i < _folders.size(); ++i) {
-			if (played_path.find_first(_folders[i].get_path()) >= 0) {
+			if (played_path.find_first(_folders[i].get_path()) != npos) {
 				_folders[i].listened_to_song(played_file.subString(file_name_len + 1).c_str());
 			}
 		}

@@ -12,7 +12,7 @@ namespace foo_countdown {
 
 			bool found = false;
 			for (int i = 0; !found && i != folders.size(); ++i) {
-				if (path.find_first(folders[i].get_path()) >= 0) {
+				if (path.find_first(folders[i].get_path()) != npos) {
 					folders[i].listened_to_song(path.c_str());
 				}
 			}
