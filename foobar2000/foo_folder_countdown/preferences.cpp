@@ -77,7 +77,7 @@ namespace foo_countdown {
 		int lowest_count = _global_count;
 
 		for (int i = 0; i < _files_count.size(); i++) {
-			if (path_.find_first(_files_count[i].path) != npos) {
+			if (!updated && path_.find_first(_files_count[i].path) != npos) {
 				_files_count[i].count += 1;
 				updated = true;
 			}

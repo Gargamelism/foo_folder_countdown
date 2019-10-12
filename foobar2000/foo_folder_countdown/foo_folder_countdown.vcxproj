@@ -75,7 +75,7 @@
     </Link>
     <CustomBuildStep>
       <Message>Copy dll to foobar's components folder for debugging</Message>
-      <Command>copy $(SolutionDir)$(Configuration)\$(ProjectName)$(TargetExt) E:\testing\foobar2000\components /y</Command>
+      <Command>xcopy /y "$(SolutionDir)$(Configuration)\$(ProjectName)$(TargetExt)" "E:\testing\foobar2000\components"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
