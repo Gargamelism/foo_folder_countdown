@@ -26,6 +26,9 @@ namespace foo_countdown {
 
 	void folder_countdown_t::update_play_count(unsigned int count) {
 		_play_count = count;
+		for (int i = 0; i < _files_count.size(); i++) {
+			_files_count[i].set_count(count);
+		}
 	}
 
 	void folder_countdown_t::reset() {
@@ -66,7 +69,7 @@ namespace foo_countdown {
 
 	void folder_countdown_t::reset_play_count() {
 		for (int i = 0; i < _files_count.size(); i++) {
-			_files_count[i].count = 0;
+			_files_count[i].set_count(0);
 		}
 	}
 
@@ -77,12 +80,12 @@ namespace foo_countdown {
 		int lowest_count = _global_count;
 
 		for (int i = 0; i < _files_count.size(); i++) {
-			if (!updated && path_.find_first(_files_count[i].path) != npos) {
-				_files_count[i].count += 1;
+			if (!updated && path_.find_first(_files_count[i].path()) != npos) {
+				_files_count[i].inc_count();
 				updated = true;
 			}
 
-			lowest_count = (lowest_count > _files_count[i].count) ? _files_count[i].count : lowest_count;
+			lowest_count = (lowest_count > _files_count[i].count()) ? _files_count[i].count() : lowest_count;
 		}
 
 		_play_count = lowest_count;
@@ -136,9 +139,9 @@ namespace foo_countdown {
 	void folders_countdown_conf::set_data_raw(stream_reader* p_stream, t_size p_sizehint, abort_callback& p_abort) {
 		unsigned int ver;
 		p_stream->read_lendian_t(ver, p_abort);
+		// this allows for version based actions
 
-		bool is_enabled;
-		p_stream->read_lendian_t(is_enabled, p_abort);
+		p_stream->read_lendian_t(_is_enabled, p_abort);
 
 		pfc::string8 path;
 		unsigned int max_plays;

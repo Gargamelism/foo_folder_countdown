@@ -48,6 +48,9 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -75,7 +78,8 @@
     </Link>
     <CustomBuildStep>
       <Message>Copy dll to foobar's components folder for debugging</Message>
-      <Command>xcopy /y "$(SolutionDir)$(Configuration)\$(ProjectName)$(TargetExt)" "E:\testing\foobar2000\components"</Command>
+      <Command>xcopy /y "E:\git\foo_folder_countdown\foobar2000\foo_folder_countdown\$(Configuration)\foo_folder_countdown.dll" Z:\components</Command>
+      <Outputs>copied file</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

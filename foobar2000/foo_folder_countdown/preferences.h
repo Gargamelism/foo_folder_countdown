@@ -12,22 +12,31 @@ namespace foo_countdown {
 
 	typedef unsigned int uint;
 
-	struct file_count_t {
-		file_count_t() : path(DEFAULT_PATH), count(0) {};
-		file_count_t(const char* p, uint c) : path(p), count(c) {};
+	class file_count_t {
+	public:
+		file_count_t() : _path(DEFAULT_PATH), _count(0) {};
+		file_count_t(const char* p, uint c) : _path(p), _count(c) {};
 		
 		file_count_t(file_count_t& f) {
-			path = f.path;
-			count = f.count;
+			set_path(f.path());
+			set_count(f.count());
 		};
 
 		file_count_t(const file_count_t& f) {
-			path = f.path;
-			count = f.count;
+			set_path(f._path.c_str());
+			set_count(f._count);
 		};
 
-		pfc::string8 path;
-		uint count;
+		uint count() { return _count; };
+		void set_count(uint count) { _count = count; };
+		const char* path() { return _path.c_str(); };
+		void set_path(const char* path) { _path = path; };
+
+		void inc_count() { ++_count; };
+
+	private:
+		pfc::string8 _path;
+		uint _count;
 	};
 
 	typedef array_t<file_count_t> files_count_t;
