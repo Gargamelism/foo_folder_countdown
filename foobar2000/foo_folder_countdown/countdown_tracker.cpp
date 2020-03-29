@@ -88,6 +88,8 @@ namespace foo_countdown {
 			bool is_same = true;
 			int len = min(len_a, len_b);
 			
+			// this check has a bug as it will fail finding the correct path between "c:\path" and "c:\path1"
+			// this will also fail for an empty string
 			for (int i = 0; is_same && i < len; i++)
 			{
 				is_same = path_a[i] == path_b[i];

@@ -6,12 +6,14 @@
 
 namespace foo_countdown {
 
-	// {A71C890D-B67D-401a-84C6-CF0B0C9A027E}
+	// {5AE9BC70-FA4B-4849-B632-F2190ED93536}
 	static const GUID folder_countdown_conf_id =
-	{ 0xa71c890d, 0xb67d, 0x401a, { 0x84, 0xc6, 0xcf, 0xb, 0xc, 0x9a, 0x2, 0x7e } };
+		{ 0x5ae9bc70, 0xfa4b, 0x4849, { 0xb6, 0x32, 0xf2, 0x19, 0xe, 0xd9, 0x35, 0x36 } };
 
 
-	void folder_countdown_t::add_folder(const char * path, unsigned int count) {
+
+
+	void folder_countdown_t::add_folder(const char* path, unsigned int count) {
 		_path = path;
 		_global_count = count;
 		_play_count = 0;
@@ -102,8 +104,8 @@ namespace foo_countdown {
 		return updated;
 	}
 
-	bool folder_countdown_t::is_in_allowed_extensions(const char * ext) {
-		bool is_allowed = false; 
+	bool folder_countdown_t::is_in_allowed_extensions(const char* ext) {
+		bool is_allowed = false;
 		pfc::string8 ext_;
 		ext_.convert_to_lower_ascii(ext);
 
@@ -166,7 +168,7 @@ namespace foo_countdown {
 		}
 	}
 
-	folders_t & folders_countdown_conf::get_folders() {
+	folders_t& folders_countdown_conf::get_folders() {
 		return _folders;
 	}
 
@@ -197,7 +199,7 @@ namespace foo_countdown {
 
 
 		//dialog resource ID
-		enum {IDD = IDD_MYPREFERENCES};
+		enum { IDD = IDD_MYPREFERENCES };
 		// preferences_page_instance methods (not all of them - get_wnd() is supplied by preferences_page_impl helpers)
 		t_uint32 get_state();
 		void apply();
@@ -210,11 +212,25 @@ namespace foo_countdown {
 			COMMAND_HANDLER_EX(IDC_FOLDER2, EN_CHANGE, OnEditChange)
 			COMMAND_HANDLER_EX(IDC_FOLDER3, EN_CHANGE, OnEditChange)
 			COMMAND_HANDLER_EX(IDC_FOLDER4, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_FOLDER5, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_FOLDER6, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_FOLDER7, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_FOLDER8, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_FOLDER9, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_FOLDER10, EN_CHANGE, OnEditChange)
+
 			COMMAND_HANDLER_EX(IDC_COUNT1, EN_CHANGE, OnEditChange)
 			COMMAND_HANDLER_EX(IDC_COUNT2, EN_CHANGE, OnEditChange)
 			COMMAND_HANDLER_EX(IDC_COUNT3, EN_CHANGE, OnEditChange)
 			COMMAND_HANDLER_EX(IDC_COUNT4, EN_CHANGE, OnEditChange)
-		END_MSG_MAP()
+			COMMAND_HANDLER_EX(IDC_COUNT5, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_COUNT6, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_COUNT7, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_COUNT8, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_COUNT9, EN_CHANGE, OnEditChange)
+			COMMAND_HANDLER_EX(IDC_COUNT10, EN_CHANGE, OnEditChange)
+
+			END_MSG_MAP()
 
 	private:
 		BOOL OnInitDialog(CWindow, LPARAM);
@@ -259,12 +275,12 @@ namespace foo_countdown {
 		folders_conf.reset();
 
 		UpdateDialog();
-	
+
 		OnChanged();
 	}
 
 	void CMyPreferences::apply() {
-		folders_t & folders = folders_conf.get_folders();
+		folders_t& folders = folders_conf.get_folders();
 
 		pfc::string8 folder_text;
 		unsigned int folder_count;
@@ -287,10 +303,10 @@ namespace foo_countdown {
 		auto folders = folders_conf.get_folders();
 
 		bool has_changed = false;
-	
+
 		for (int i = 0; !has_changed && i < folders.size(); i++) {
-			has_changed = has_changed || 
-				folders[i].get_path() != uGetDlgItemText(m_hWnd, conf_ids[i].path).c_str() || 
+			has_changed = has_changed ||
+				folders[i].get_path() != uGetDlgItemText(m_hWnd, conf_ids[i].path).c_str() ||
 				folders[i].get_max_plays() != GetDlgItemInt(conf_ids[i].max_count);
 		}
 
@@ -304,16 +320,17 @@ namespace foo_countdown {
 	class preferences_page_myimpl : public preferences_page_impl<CMyPreferences> {
 		// preferences_page_impl<> helper deals with instantiation of our dialog; inherits from preferences_page_v3.
 	public:
-		const char * get_name() {return "Folder Play Countdown";}
+		const char* get_name() { return "Folder Play Countdown"; }
 		GUID get_guid() {
-			// This is our GUID. Replace with your own when reusing the code.
-			// {0B9C57A6-5E57-4f7d-8AE9-20591FE5D98B}
-			static const GUID guid = { 0xb9c57a6, 0x5e57, 0x4f7d, { 0x8a, 0xe9, 0x20, 0x59, 0x1f, 0xe5, 0xd9, 0x8b } };
+			// {AA2E06E5-0B43-48B7-8F1F-91792BEF9D7B}
+			static const GUID guid =
+				{ 0xaa2e06e5, 0xb43, 0x48b7, { 0x8f, 0x1f, 0x91, 0x79, 0x2b, 0xef, 0x9d, 0x7b } };
+
 			return guid;
 		}
-		GUID get_parent_guid() {return guid_tools;}
+		GUID get_parent_guid() { return guid_tools; }
 
-};
+	};
 
 	folders_countdown_conf folders_conf;
 

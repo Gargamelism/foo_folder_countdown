@@ -5,7 +5,7 @@
 
 namespace foo_countdown {
 #ifndef DEFAULT_PATH
-	#define DEFAULT_PATH "folder path"
+#define DEFAULT_PATH "folder path"
 #endif // !DEFAULT_PATH
 
 	const int npos = ~0;
@@ -16,7 +16,7 @@ namespace foo_countdown {
 	public:
 		file_count_t() : _path(DEFAULT_PATH), _count(0) {};
 		file_count_t(const char* p, uint c) : _path(p), _count(c) {};
-		
+
 		file_count_t(file_count_t& f) {
 			set_path(f.path());
 			set_count(f.count());
@@ -58,7 +58,7 @@ namespace foo_countdown {
 	private:
 		static const int _allowed_extensions_size = 4;
 		pfc::string8 _allowed_extensions[_allowed_extensions_size] = { ".mp3", ".mp4", ".ogg", ".m4a" };
-		bool is_in_allowed_extensions(const char*  ext);
+		bool is_in_allowed_extensions(const char* ext);
 
 		unsigned int _global_count;
 		unsigned int _play_count;
@@ -78,12 +78,18 @@ namespace foo_countdown {
 		int current_count;
 	};
 
-	const int CONF_IDS_SIZE = 4;
+	const int CONF_IDS_SIZE = 10;
 	const folder_conf_id conf_ids[CONF_IDS_SIZE] = {
 				{IDC_FOLDER1, IDC_MAX_COUNT1, IDC_COUNT1},
 				{IDC_FOLDER2, IDC_MAX_COUNT2, IDC_COUNT2},
 				{IDC_FOLDER3, IDC_MAX_COUNT3, IDC_COUNT3},
-				{IDC_FOLDER4, IDC_MAX_COUNT4, IDC_COUNT4}
+				{IDC_FOLDER4, IDC_MAX_COUNT4, IDC_COUNT4},
+				{IDC_FOLDER5, IDC_MAX_COUNT5, IDC_COUNT5},
+				{IDC_FOLDER6, IDC_MAX_COUNT6, IDC_COUNT6},
+				{IDC_FOLDER7, IDC_MAX_COUNT7, IDC_COUNT7},
+				{IDC_FOLDER8, IDC_MAX_COUNT8, IDC_COUNT8},
+				{IDC_FOLDER9, IDC_MAX_COUNT9, IDC_COUNT9},
+				{IDC_FOLDER10, IDC_MAX_COUNT10, IDC_COUNT10}
 	};
 
 	class folders_countdown_conf : public cfg_var {
@@ -108,5 +114,5 @@ namespace foo_countdown {
 	};
 
 	extern folders_countdown_conf folders_conf;
-	
+
 } // namespace foo_countdown
