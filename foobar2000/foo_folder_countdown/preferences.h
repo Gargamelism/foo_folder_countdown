@@ -47,13 +47,15 @@ namespace foo_countdown {
 		};
 
 		void add_folder(const char* path, unsigned int count);
-		void update_play_count(unsigned int count);
+		void update_play_count(const char* file_name, unsigned int count);
 		void reset();
 		pfc::string8 get_path();
 		unsigned int get_count();
 		unsigned int get_max_plays();
 
 		bool listened_to_song(const char* path);
+
+		files_count_t get_files_count();
 
 	private:
 		static const int _allowed_extensions_size = 4;

@@ -3,15 +3,13 @@
 #include "preferences.h"
 #include <helpers/atl-misc.h>
 #include <windows.h>
+#include <cstring>
 
 namespace foo_countdown {
 
-	// {5AE9BC70-FA4B-4849-B632-F2190ED93536}
+	// {2D1374B2-F5F8-4605-B86C-DCC81F382477}
 	static const GUID folder_countdown_conf_id =
-		{ 0x5ae9bc70, 0xfa4b, 0x4849, { 0xb6, 0x32, 0xf2, 0x19, 0xe, 0xd9, 0x35, 0x36 } };
-
-
-
+		{ 0x2d1374b2, 0xf5f8, 0x4605, { 0xb8, 0x6c, 0xdc, 0xc8, 0x1f, 0x38, 0x24, 0x77 } };
 
 	void folder_countdown_t::add_folder(const char* path, unsigned int count) {
 		_path = path;
@@ -26,11 +24,17 @@ namespace foo_countdown {
 		}
 	}
 
-	void folder_countdown_t::update_play_count(unsigned int count) {
-		_play_count = count;
-		for (int i = 0; i < _files_count.size(); i++) {
-			_files_count[i].set_count(count);
+	void folder_countdown_t::update_play_count(const char* file_name, unsigned int count) {
+		bool found = false;
+		
+		for (int i = 0; !found && i < _files_count.size(); i++) {
+			found = !std::strcmp(_files_count[i].path(), file_name);
+			if (found) {
+				_files_count[i].set_count(count);
+			}
 		}
+
+		_play_count = (_global_count > count) ? count : _global_count;
 	}
 
 	void folder_countdown_t::reset() {
@@ -79,7 +83,7 @@ namespace foo_countdown {
 		bool updated = false;
 		pfc::string8 path_(path);
 
-		int lowest_count = _global_count;
+		unsigned int lowest_count = _global_count;
 
 		for (int i = 0; i < _files_count.size(); i++) {
 			if (!updated && path_.find_first(_files_count[i].path()) != npos) {
@@ -102,6 +106,10 @@ namespace foo_countdown {
 		}
 
 		return updated;
+	}
+
+	files_count_t folder_countdown_t::get_files_count() {
+		return _files_count;
 	}
 
 	bool folder_countdown_t::is_in_allowed_extensions(const char* ext) {
@@ -134,7 +142,12 @@ namespace foo_countdown {
 		for (int i = 0; i < _folders.size(); i++) {
 			p_stream->write_string(_folders[i].get_path().c_str(), p_abort);
 			p_stream->write_lendian_t(_folders[i].get_max_plays(), p_abort);
-			p_stream->write_lendian_t(_folders[i].get_count(), p_abort);
+
+			auto files_count = _folders[i].get_files_count();
+			for (int j = 0; j < files_count.size(); j++) {
+				p_stream->write_string(files_count[j].path(), p_abort);
+				p_stream->write_lendian_t(files_count[j].count(), p_abort);
+			}
 		}
 	}
 
@@ -147,14 +160,22 @@ namespace foo_countdown {
 
 		pfc::string8 path;
 		unsigned int max_plays;
-		unsigned int play_count;
+		
+		pfc::string8 file_name;
+		unsigned int file_count;
+
 		for (int i = 0; i < _folders.size(); i++) {
 			p_stream->read_string(path, p_abort);
 			p_stream->read_lendian_t(max_plays, p_abort);
-			p_stream->read_lendian_t(play_count, p_abort);
 
 			_folders[i].add_folder(path.c_str(), max_plays);
-			_folders[i].update_play_count(play_count);
+			auto files_count = _folders[i].get_files_count();
+			for (int j = 0; j < files_count.size(); j++) {
+				p_stream->read_string(file_name, p_abort);
+				p_stream->read_lendian_t(file_count, p_abort);
+
+				_folders[i].update_play_count(file_name.c_str(), file_count);
+			}
 		}
 	}
 
@@ -322,9 +343,10 @@ namespace foo_countdown {
 	public:
 		const char* get_name() { return "Folder Play Countdown"; }
 		GUID get_guid() {
-			// {AA2E06E5-0B43-48B7-8F1F-91792BEF9D7B}
+			// {619DD68F-88F9-4C16-8D95-C72E12C87A4C}
+			// {95DCBEED-8E8A-4E90-B1AA-E4F125C59491}
 			static const GUID guid =
-				{ 0xaa2e06e5, 0xb43, 0x48b7, { 0x8f, 0x1f, 0x91, 0x79, 0x2b, 0xef, 0x9d, 0x7b } };
+				{ 0x95dcbeed, 0x8e8a, 0x4e90, { 0xb1, 0xaa, 0xe4, 0xf1, 0x25, 0xc5, 0x94, 0x91 } };
 
 			return guid;
 		}

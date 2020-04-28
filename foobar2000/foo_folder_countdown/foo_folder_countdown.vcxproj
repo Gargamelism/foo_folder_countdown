@@ -78,7 +78,7 @@
     </Link>
     <CustomBuildStep>
       <Message>Copy dll to foobar's components folder for debugging</Message>
-      <Command>xcopy /y "E:\git\foo_folder_countdown\foobar2000\foo_folder_countdown\$(Configuration)\foo_folder_countdown.dll" Z:\components</Command>
+      <Command>xcopy /y "E:\git\foo_folder_countdown\foobar2000\foo_folder_countdown\$(Configuration)\foo_folder_countdown.dll" "E:\testing\foobar2000\components"</Command>
       <Outputs>copied file</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
