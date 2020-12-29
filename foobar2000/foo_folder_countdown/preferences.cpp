@@ -7,9 +7,30 @@
 
 namespace foo_countdown {
 
-	// {2D1374B2-F5F8-4605-B86C-DCC81F382477}
+	LPWSTR mb_to_wide(LPSTR mb_str)
+	{
+		int w_length = MultiByteToWideChar(CP_UTF8, 0, mb_str, strlen(mb_str), NULL, 0);
+		w_length += 10;
+		LPWSTR w_str = new wchar_t[w_length];
+		MultiByteToWideChar(CP_UTF8, 0, mb_str, -1, w_str, w_length);
+
+		return w_str;
+	}
+
+	LPSTR wide_to_mb(LPWSTR w_str)
+	{
+		int mb_length = WideCharToMultiByte(CP_UTF8, 0, w_str, lstrlen(w_str) + 1, NULL, 0, NULL, NULL);
+		mb_length += 10;
+		LPSTR mb_str = new char[mb_length];
+		WideCharToMultiByte(CP_UTF8, 0, w_str, lstrlen(w_str) + 1, mb_str, mb_length, NULL, NULL);
+
+		return mb_str;
+	}
+
+	// {85027768-2FE9-4AC5-96C2-AEF9D36B3D0F}
 	static const GUID folder_countdown_conf_id =
-		{ 0x2d1374b2, 0xf5f8, 0x4605, { 0xb8, 0x6c, 0xdc, 0xc8, 0x1f, 0x38, 0x24, 0x77 } };
+	{ 0x85027768, 0x2fe9, 0x4ac5, { 0x96, 0xc2, 0xae, 0xf9, 0xd3, 0x6b, 0x3d, 0xf } };
+
 
 	void folder_countdown_t::add_folder(const char* path, unsigned int count) {
 		_path = path;
@@ -59,18 +80,25 @@ namespace foo_countdown {
 		pfc::string8 path = _path;
 		path += "\\*";
 
-		WIN32_FIND_DATAA find_data;
-		HANDLE first_file = FindFirstFileA((LPCSTR)path.c_str(), &find_data);
+		WIN32_FIND_DATA find_data;
+		auto wPath = mb_to_wide((LPSTR)path.c_str());
+		HANDLE first_file = FindFirstFile(wPath, &find_data);
 
 		if (INVALID_HANDLE_VALUE != first_file) {
 			do {
-				auto extension = PathFindExtensionA(find_data.cFileName);
+				auto wExtension = PathFindExtension(find_data.cFileName);
 
-				if (is_in_allowed_extensions(extension)) {
-					_files_count.push_back(file_count_t(find_data.cFileName, _play_count));
+				auto mbExtension = wide_to_mb(wExtension);
+
+				if (is_in_allowed_extensions(mbExtension)) {
+					_files_count.push_back(file_count_t(wide_to_mb(find_data.cFileName), _play_count));
 				}
-			} while (FindNextFileA(first_file, &find_data) != FALSE);
+
+				delete[] mbExtension;
+			} while (FindNextFile(first_file, &find_data) != FALSE);
 		}
+
+		delete[] wPath;
 	}
 
 	void folder_countdown_t::reset_play_count() {
@@ -343,10 +371,10 @@ namespace foo_countdown {
 	public:
 		const char* get_name() { return "Folder Play Countdown"; }
 		GUID get_guid() {
-			// {619DD68F-88F9-4C16-8D95-C72E12C87A4C}
-			// {95DCBEED-8E8A-4E90-B1AA-E4F125C59491}
+			// {69F7645E-D586-4B63-B2E7-B68683D3F4BC}
 			static const GUID guid =
-				{ 0x95dcbeed, 0x8e8a, 0x4e90, { 0xb1, 0xaa, 0xe4, 0xf1, 0x25, 0xc5, 0x94, 0x91 } };
+			{ 0x69f7645e, 0xd586, 0x4b63, { 0xb2, 0xe7, 0xb6, 0x86, 0x83, 0xd3, 0xf4, 0xbc } };
+
 
 			return guid;
 		}
